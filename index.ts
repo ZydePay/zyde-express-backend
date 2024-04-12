@@ -38,11 +38,10 @@ app.post('/transferUSDCEtherOPtion', async (req: Request, res:Response) => {
   }catch(error){
     console.log(error)
   }
- 
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(Number(PORT), '0.0.0.0',() => {
-  console.log(`Server is running on port ${PORT}`);
+const port = process.env.PORT || 4000;
+app.listen(port,() => {
+  console.log(`Server is running on port ${port}`);
 });
