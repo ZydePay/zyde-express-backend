@@ -12,6 +12,7 @@ import {
 import { checkTransactionStatus } from "./arc-gasless"
 
 import dotenv from "dotenv"
+import { dataLength } from "ethers";
 dotenv.config({path: "./.env"})
 
 const USDCTokenAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" // USDC Proxy address
