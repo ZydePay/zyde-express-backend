@@ -17,20 +17,20 @@ dotenv.config({path: "./.env"})
 
 const USDCTokenAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" // USDC Proxy address
 const zydeContractAddress = "0x581951B3CB2bB1a4e34D706173567caF19931Faa";
-let receipientAddress: string = "0xF8a485A3c7F0497e5de4Dde26cbefc1465499251"
+// let receipientAddress: string = "0xF8a485A3c7F0497e5de4Dde26cbefc1465499251"
 
 const bundlerUrl = process.env.BICONOMY_POLYGON_MAINNET_BUNDLER as string // Found at https://dashboard.biconomy.io
 
 export const createSmartAccount = async (privateKey: string) => {
   // Your configuration with private key and Biconomy API key
   const config = {
-    privateKey: privateKey as string,
+    privateKey: privateKey,
     biconomyPaymasterApiKey: process.env.BICONOMY_API_KEY as string,
     bundlerUrl: bundlerUrl, // <-- Read about this at https://docs.biconomy.io/dashboard#bundler-url
   };
 
   // Generate EOA from private key using ethers.js
-  const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
+  const account = privateKeyToAccount(`0x${privateKey}`);
   const client = createWalletClient({
     account,
     chain: polygon,
@@ -49,7 +49,7 @@ export const createSmartAccount = async (privateKey: string) => {
   return { smartWallet, saAddress }
 };
 
-export const transferUSDC = async (amount: number, receipient: string) => {
+export const transferUSDC = async (amount: number, receipient: string, privateKey: string) => {
    // amount to approve and transfer
    const transferAmount = amount
    const fee = transferAmount * 11/1000;
@@ -60,11 +60,11 @@ export const transferUSDC = async (amount: number, receipient: string) => {
    const approvalAmount = parseUnits(totalApproveAmount.toString(), 6)
 
    // call the create smart contract function to get the smart account address
-  const {smartWallet, saAddress } = await createSmartAccount(process.env.PRIVATE_KEY as string)
+  const {smartWallet, saAddress } = await createSmartAccount(privateKey)
 
   // call the gasless transfer to smart account function  
   // check gasless transfer to smart account transaction status 
-  const res = await checkTransactionStatus(saAddress, transferAmount, process.env.PRIVATE_KEY as string)
+  const res = await checkTransactionStatus(saAddress, transferAmount, privateKey)
   console.log(res)
   if (!(res && res.data && res.data.txStatus === "CONFIRMED")) {
     console.log("response from index", res);

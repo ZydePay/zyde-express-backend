@@ -13,7 +13,7 @@ const bundlerUrl = process.env.BICONOMY_POLYGON_MAINNET_BUNDLER as string // Fou
 const createSmartAccount = async (privateKey: string) => {
     // Your configuration with private key and Biconomy API key
   const config = {
-    privateKey: privateKey as string,
+    privateKey: privateKey,
     biconomyPaymasterApiKey: process.env.BICONOMY_API_KEY as string,
     bundlerUrl: bundlerUrl, // <-- Read about this at https://docs.biconomy.io/dashboard#bundler-url
     rpcUrl: process.env.ALCHEMY_MAINNET_URL as string,
@@ -35,7 +35,7 @@ const createSmartAccount = async (privateKey: string) => {
   return { smartWallet, saAddress }
 }
 
-export const transferUSDCEtherOption = async (amount: number, receipient: string) => {
+export const transferUSDCEtherOption = async (amount: number, receipient: string, privateKey: string) => {
   // amount to approve and transfer
   const transferAmount = amount
   const fee = transferAmount * 11/1000;
@@ -45,11 +45,11 @@ export const transferUSDCEtherOption = async (amount: number, receipient: string
   const amountToTransfer = parseUnits(transferAmount.toString(), 6);
   const approvalAmount = parseUnits(totalApproveAmount.toString(), 6)
   // call the create smart contract function to get the smart account address
- const { smartWallet, saAddress } = await createSmartAccount(process.env.PRIVATE_KEY as string)
+ const { smartWallet, saAddress } = await createSmartAccount(privateKey)
 
  // call the gasless transfer to smart account function  
  // check gasless transfer to smart account transaction status 
- const res = await checkTransactionStatus(saAddress, amount, process.env.PRIVATE_KEY as string)
+ const res = await checkTransactionStatus(saAddress, amount, privateKey)
  console.log(res)
  if (!(res && res.data && res.data.txStatus === "CONFIRMED")) {
    console.log("response from index", res);

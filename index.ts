@@ -13,11 +13,11 @@ app.get('/', (req: Request, res: Response) => {
 
 app.post('/transferUSDC', async (req: Request, res:Response) => {
   try{
-    const { amount, receipient } = req.body;
+    const { amount, receipient, privateKey } = req.body;
     console.log(req.body)
     // Call the transferUSDC function with the provided parameters
     // and send the result back as the response
-    const result = await transferUSDC(amount, receipient);
+    const result = await transferUSDC(amount, receipient, privateKey);
     console.log("transactionHash", result)
     return res.json({transactionHash: result});
   }catch(error){
@@ -28,11 +28,11 @@ app.post('/transferUSDC', async (req: Request, res:Response) => {
 
 app.post('/transferUSDCEtherOPtion', async (req: Request, res:Response) => {
   try{
-    const { amount, receipient } = req.body;
+    const { amount, receipient, privateKey } = req.body;
     console.log(req.body)
     // Call the transferUSDC function with the provided parameters
     // and send the result back as the response
-    const result = await transferUSDCEtherOption(amount, receipient);
+    const result = await transferUSDCEtherOption(amount, receipient, privateKey);
     console.log("transactionHash", result)
     return res.json({transactionHash: result});
   }catch(error){
