@@ -41,7 +41,7 @@ app.post('/transferUSDCEtherOPtion', async (req: Request, res:Response) => {
 });
 
 // Start the server
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 10000;
 app.listen(port,() => {
   console.log(`Server is running on port ${port}`);
 });
